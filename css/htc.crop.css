@@ -1,0 +1,73 @@
+.htc-crop-bound{
+  outline:1px solid #CEFF80;
+}
+.htc-crop-bound .htc-corner{
+  z-index:1;
+  background-color: #000;
+  opacity:0.5;
+  position:absolute;
+}
+.htc-crop-bound .htc-lt{
+  width: 20%;
+  height: 20%;
+  left:0px;
+  top:0px;
+}
+.htc-crop-bound .htc-lc{
+  width: 5%;
+  height: 60%;
+  left:0px;
+  top:20%;
+}
+.htc-crop-bound .htc-lb{
+  width: 20%;
+  height: 20%;
+  left:0px;
+  bottom:0px;
+}
+.htc-crop-bound .htc-rt{
+  width: 20%;
+  height: 20%;
+  right:0px;
+  top:0px;
+}
+.htc-crop-bound .htc-rc{
+  width: 5%;
+  height: 60%;
+  right:0px;
+  top:20%;
+}
+.htc-crop-bound .htc-rb{
+  width: 20%;
+  right:0px;
+  height: 20%;
+  bottom:0px;
+}
+.htc-crop-bound .htc-block-l{
+  position: absolute;
+  outline: 1px solid #CEFF80;
+  width: 15%;
+  height: 60%;
+  top: 20%;
+  left:5%;
+  z-index:1;
+}
+.htc-crop-bound .htc-block-r{
+  position: absolute;
+  outline: 1px solid #CEFF80;
+  width: 15%;
+  height: 60%;
+  top: 20%;
+  right:5%;
+  z-index:1;
+}
+.htc-crop-bound .htc-block-c{
+  position: absolute;
+  width: 60%;
+  left:20%;
+  height:100%;
+  border-left:1px solid #CEFF80;
+  border-right:1px solid #CEFF80;
+  z-index:1;
+}
+

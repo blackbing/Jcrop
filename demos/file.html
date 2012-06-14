@@ -8,6 +8,7 @@
     <script src="../js/jquery.Jcrop.js" type="text/javascript"></script>
     <link rel="stylesheet" href="../css/jquery.Jcrop.css" type="text/css" />
     <link rel="stylesheet" href="demo_files/demos.css" type="text/css" />
+    <link rel="stylesheet" href="../css/htc.crop.css" type="text/css" />
     <script type="text/javascript">
 
     var ctx;
@@ -35,7 +36,13 @@
       ctx.clearRect(0,0, canvas.width, canvas.height);
       canvas.width = c.w;
       canvas.height = c.h;
-      ctx.drawImage($('#target')[0], c.x, c.y, c.w, c.h, 0, 0, c.w, c.h);
+      var ratio = $('#target').prop('naturalWidth')/$('#target').prop('width')
+      var sX = c.x*ratio;
+      var sY = c.y*ratio;
+      var sW = c.w*ratio;
+      var sH = c.h*ratio;
+
+      ctx.drawImage($('#target')[0], sX, sY, sW, sH, 0, 0, c.w, c.h);
     }
 
     function clearCoords()
@@ -66,7 +73,8 @@
         $('#target').Jcrop({
           onChange:   showCoords,
           onSelect: drawImage,
-          onRelease:  clearCoords
+          onRelease:  clearCoords,
+          aspectRatio: 426 / 265
         }, function(){
           jcrop_api = this;
         });
@@ -88,11 +96,11 @@
   <div class="jcExample">
   <div class="article">
 
-    <h1>Jcrop - Event Handlers</h1>
+    <h1>Jcrop - for HTC crop Homescreen</h1>
     <input id="filesInput" type="file" onchange="read()">
 
     <!-- This is the image we're attaching Jcrop to -->
-    <img src="" id="target" alt="Flowers" />
+    <img src="" id="target" alt="Flowers" width="700"/>
 
     <!-- This is the form that our event handler fills -->
     <form id="coords"
@@ -111,18 +119,6 @@
       <canvas id="previewCanvas"></canvas>
     </form>
     <button id="crop" onclick="crop()">crop</button>
-
-    <p>
-      <b>An example with a basic event handler.</b> Here we've tied
-      several form values together with a simple event handler invocation.
-      The result is that the form values are updated in real-time as
-      the selection is changed using Jcrop's <em>onChange</em> handler.
-    </p>
-
-    <p>
-      That's how easily Jcrop can be integrated into a traditional web form!
-    </p>
-
     <div id="dl_links">
       <a href="http://deepliquid.com/content/Jcrop.html">Jcrop Home</a> |
       <a href="http://deepliquid.com/content/Jcrop_Manual.html">Manual (Docs)</a>
