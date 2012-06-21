@@ -6,6 +6,10 @@
     <title>Jcrop &raquo; Tutorials &raquo; Event Handler</title>
     <script src="../js/jquery.min.js" type="text/javascript"></script>
     <script src="../js/jquery.Jcrop.js" type="text/javascript"></script>
+    <!--[if lt IE 10]>
+    <script src="https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+    <script src="FileReader/jquery.FileReader.js"></script>
+    <![endif]-->
     <link rel="stylesheet" href="../css/jquery.Jcrop.css" type="text/css" />
     <link rel="stylesheet" href="demo_files/demos.css" type="text/css" />
     <link rel="stylesheet" href="../css/htc.crop.css" type="text/css" />
@@ -51,36 +55,41 @@
     };
 
     var jcrop_api;
-    function read(){
+    function read(evt){
 
       if(jcrop_api){
-        console.log(jcrop_api);
         jcrop_api.destroy();
         $('#target').removeAttr('src').removeAttr('style');
       }
 
-      var files = $('#filesInput')[0].files;
-      if (!files.length) {
-          alert('請輸入');
-          return;
-      }
-      var file = files[0];
-      var fileName = file.fileName;
-      var fileSize = file.fileSize;
-      var reader = new FileReader();
-      reader.onload = function() {
-        $('#target').attr('src', reader.result);
-        $('#target').Jcrop({
-          onChange:   showCoords,
-          onSelect: drawImage,
-          onRelease:  clearCoords,
-          aspectRatio: 426 / 265
-        }, function(){
-          jcrop_api = this;
-        });
+      var files = evt.target.files;
 
-      };
-      reader.readAsDataURL(file);
+      if(typeof FileReader !== 'undefined'){
+
+        var file = files[0];
+        var fileName = file.fileName;
+        var fileSize = file.fileSize;
+
+        var reader = new FileReader();
+        reader.onload = function() {
+          $('#target').attr('src', reader.result);
+          $('#target').Jcrop({
+            onChange:   showCoords,
+            onSelect: drawImage,
+            onRelease:  clearCoords,
+            aspectRatio: 426 / 265
+          }, function(){
+            jcrop_api = this;
+          });
+
+        };
+        reader.readAsDataURL(file);
+
+      }else{
+        //IE
+        alert('not support realtime preview');
+
+      }
     }
 
     function crop(){
@@ -89,6 +98,23 @@
 
 
     }
+
+
+    $(window).load(function(){
+      if($.browser.msie && $.browser.version <= 9){
+        console.log('IE 9', 'load flash solution...')
+        $('#filesInput').fileReader({
+          id: 'fileReaderSWFObject',
+          filereader: 'FileReader/filereader.swf',
+          debugMode: true,
+          callback: function(){
+
+          }
+
+        });
+      }
+      $('#filesInput').on('change', read);
+    });
     </script>
   </head>
   <body>
@@ -97,7 +123,7 @@
   <div class="article">
 
     <h1>Jcrop - for HTC crop Homescreen</h1>
-    <input id="filesInput" type="file" onchange="read()">
+    <input id="filesInput" type="file" >
 
     <!-- This is the image we're attaching Jcrop to -->
     <img src="" id="target" alt="Flowers" width="700"/>
