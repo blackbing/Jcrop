@@ -47,10 +47,12 @@
                         options.multiple = !!(options.multiple === null ? input.attr('multiple') : options.multiple);
                         options.accept = options.accept === null ? input.attr('accept') : options.multiple;
 
+                        refElement = options.refElement? options.refElement : input;
+
                         FileAPIProxy.inputs[id] = input;
                         FileAPIProxy.swfObject.add(id, options.multiple, options.accept, options.label, options.extensions);
 
-                        input.css('z-index', 0)
+                        refElement.css('z-index', 0)
                                 .mouseover(function (e) {
                                         if (id !== currentTarget) {
                                                 e = e || window.event;
@@ -61,14 +63,14 @@
 //                                                      .width(input.outerWidth())
 //                                                      .position({of:input});
                                                         .css({
-                                                          width: input.outerWidth(),
-                                                          height: input.outerHeight(),
-                                                          left: input.position().left+'px',
-                                                          top: input.position().top+'px'
+                                                          width: refElement.outerWidth(),
+                                                          height: refElement.outerHeight(),
+                                                          left: refElement.offset().left+'px',
+                                                          top: refElement.offset().top+'px'
                                                         });
                                         }
-                                })
-                                .click(function(e) {
+                                });
+                        input.click(function(e) {
                                         e.preventDefault();
                                         e.stopPropagation();
                                         e.stopImmediatePropagation();
